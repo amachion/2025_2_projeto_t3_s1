@@ -1,6 +1,8 @@
 const express = require("express");
+const cors = require("cors")
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 //requisição GET no endereço http://localhost:3000/oi
 app.get("/oi", (req, res) => {
