@@ -10,13 +10,72 @@
 </head>
 
 <body onload="obtemFilmes()">
-    <div class="container mt-5">
 
+    <div class="modal fade" id="modalCadastro"
+         aria-labelledby="modalCadastro" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5">Cadastro de usuário</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-dismissible fade d-none alert-modal-cadastro" role="alert">
+                    </div>
+                    <form>
+                        <div class="mb-3">
+                            <label for="usuarioCadastroInput" class="col-form-label">Usuário</label>
+                            <input type="text" class="form-control" id="usuarioCadastroInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="passwordCadastroInput" class="col-form-label">Senha</label>
+                            <input type="text" class="form-control" id="passwordCadastroInput">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" type="button" 
+                    onclick="cadastrarUsuario()">Cadastrar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="d-none alert alert-danger alert-dismissible fade" role="alert">
-                    Preencha todos os campos
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="close"></button>
+                <nav class="navbar navbar-expand-md bg-light">
+                    <a href="#" class="navbar-brand">Filmes</a>
+                    <button class="navbar-toggler" 
+                            type="button" 
+                            data-bs-toggle="collapse" 
+                            data-bs-target="#myNav"
+                            aria-controls="myNav" 
+                            aria-expanded="false" 
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="myNav">
+                        <div class="navbar-nav ms-auto">
+                            <a href="#" class="nav-link active me-2" aria-current="page">
+                                Login
+                            </a>
+                            <a href="#" class="nav-link active me-2"
+                               data-bs-toggle="modal" data-bs-target="#modalCadastro">
+                                Novo usuário
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="alert alert-dismissible fade d-none alert-filmes" role="alert">
                 </div>
             </div>
         </div>
@@ -65,8 +124,6 @@
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-</body>
-…
 </body>
 
 </html>

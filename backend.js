@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken")
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -53,7 +54,7 @@ app.post('/signup', async (req, res) => {
     const login = req.body.login
     const password = req.body.password
     const passwordCriptografada = await bcrypt.hash(password, 10)
-    const usuario = new Usuario({ login: login, password: passwordCriptografada})
+    const usuario = new Usuario({login: login, password: passwordCriptografada})
     const respMongo = await usuario.save()
     console.log (respMongo)
     res.status(201).end()
@@ -62,6 +63,30 @@ app.post('/signup', async (req, res) => {
     console.log(exception)
     res.status(409).end()
   }
+})
+
+app.post('/login', async (req, res) => {
+  //capturar o que o usuário digitou
+  const login = req.body.login
+  const password = req.body.password
+  //faz a busca no MongoDB
+  const user = await Usuario.findOne({login: login})
+  if (!user) {
+    //usuário não foi encontrado
+    return res.status(401).json({mensagem: "usuário inválido"})
+  }
+  const senhaValida = await bcrypt.compare(password, user.password)
+  if (!senhaValida) {
+    //senha incorreta
+    return res.status(401).json({mensagem: "senha inválida"})
+  }
+  //gerar o jwt
+  const token = jwt.sign(
+    {login: login},
+    "chave-secreta", 
+    {expiresIn: "1h"}
+  )
+  res.status(200).json({token: token})
 })
 
 const PORTA = 3000
