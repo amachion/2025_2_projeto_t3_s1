@@ -115,5 +115,76 @@ function esconderModal (seletor, timeout) {
   }, timeout)
 }
 
+const fazerLogin = async () => {
+  //1. posicionar nos inputs
+  let usuarioLoginInput = document.querySelector("#usuarioLoginInput")
+  let passwordLoginInput = document.querySelector("#passwordLoginInput")
+  //2. captura os valores digitados
+  let usuarioLogin = usuarioLoginInput.value
+  let passwordLogin = passwordLoginInput.value
+  if (usuarioLogin && passwordLogin) {
+    //requisição com try - catch
+    try {
+      //montar a URL
+      let loginEndpoint = '/login'
+      let URLcompleta = `${protocolo}${baseURL}${loginEndpoint}`
+      //faz a requisição capturando a resposta do back
+      let response = await axios.post (URLcompleta, {login: usuarioLogin, password: passwordLogin})
+      //console.log(response.data);
+      //armazenar o token no localStorage que persiste enquanto a sessão está ativa
+      const token =response.data.token
+      localStorage.setItem('tokenFilmes', token)
+      //limpa as caixinhas
+      usuarioLoginInput.value = ""
+      passwordLoginInput.value = ""
+      exibirAlerta('.alert-modal-login', 'Login realizado com sucesso', ['show', 'alert-success'], ['d-none', 'alert-danger'], 2000)
+      esconderModal('#modalLogin', 2000)
+      //alterar o status do botão de cadastro de filme
+      let cadastrarFilmeButton = document.querySelector('#cadastrarFilmeButton')
+      cadastrarFilmeButton.disabled = false
+      //alterar o texto do link de login
+      let loginLink = document.querySelector('#loginLink')
+      loginLink.innerHTML = "Logout"
+    }
+    catch (error) {
+      exibirAlerta('.alert-modal-login', 'Falha no login', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
+    }
+  }
+  else {
+    exibirAlerta('.alert-modal-login', 'Preencha todos os campos', ['show', 'alert-danger'], ['d-none', 'alert-success'], 2000)
+  }
+}
+function atualizarEstadoLogin () {
+  const token = localStorage.getItem('tokenFilmes')
+  let cadastrarFilmeButton = document.querySelector('#cadastrarFilmeButton')
+  let loginLink = document.querySelector('#loginLink')
+  if (token) {
+    cadastrarFilmeButton.disabled = false
+    loginLink.innerHTML = "Logout"
+  }
+  else {
+    cadastrarFilmeButton.disabled = true
+    loginLink.innerHTML = "Login"
+  }
+}
+function fazerLogout () {
+  //remover itens persistidos
+  localStorage.removeItem('tokenFilmes')
+  //desabilitar o botão de cadastrar Filme
+  const cadastrarFilmeButton = document.querySelector('#cadastrarFilmeButton')
+  cadastrarFilmeButton.disabled = true
+  //alterar o texto do link para Login
+  const loginLink = document.querySelector("#loginLink")
+  loginLink.innerHTML = 'Login'
+}
 
-
+function loginOuLogout () {
+  const loginLink = document.querySelector("#loginLink")
+  if (loginLink.innerHTML === 'Login') {
+    const modal = new bootstrap.Modal("#modalLogin")
+    modal.show()
+  }
+  else {
+    fazerLogout()
+  }
+}

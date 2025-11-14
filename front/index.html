@@ -9,7 +9,7 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 
-<body onload="obtemFilmes()">
+<body onload="obtemFilmes(); atualizarEstadoLogin()">
 
     <div class="modal fade" id="modalCadastro"
          aria-labelledby="modalCadastro" aria-hidden="true">
@@ -39,8 +39,38 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <div class="modal fade" id="modalLogin"
+         aria-labelledby="modalLogin" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5">Login</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-dismissible fade d-none alert-modal-login" role="alert">
+                    </div>
+                    <form>
+                        <div class="mb-3">
+                            <label for="usuarioLoginInput" class="col-form-label">Usuário</label>
+                            <input type="text" class="form-control" id="usuarioLoginInput">
+                        </div>
+                        <div class="mb-3">
+                            <label for="passwordLoginInput" class="col-form-label">Senha</label>
+                            <input type="text" class="form-control" id="passwordLoginInput">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Cancelar</button>
+                    <button class="btn btn-primary" type="button" 
+                    onclick="fazerLogin()">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -58,7 +88,9 @@
                     </button>
                     <div class="collapse navbar-collapse" id="myNav">
                         <div class="navbar-nav ms-auto">
-                            <a href="#" class="nav-link active me-2" aria-current="page">
+                            <a href="#" class="nav-link active me-2" aria-current="page"
+                               onclick="loginOuLogout()"
+                               id="loginLink">
                                 Login
                             </a>
                             <a href="#" class="nav-link active me-2"
@@ -97,7 +129,8 @@
 
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <button class="btn btn-outline-primary w-100" onclick="cadastrarFilme()">
+                <button class="btn btn-outline-primary w-100" onclick="cadastrarFilme()"
+                        disabled id="cadastrarFilmeButton">
                     Cadastrar
                 </button>
             </div>
